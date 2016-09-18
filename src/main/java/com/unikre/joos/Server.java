@@ -39,6 +39,10 @@ public class Server {
         return true;
     }
 
+    public void joinThread() throws InterruptedException {
+        this.threadWaitClient.join();
+    }
+
     public boolean stop() {
 
         isRunning = false;
@@ -60,10 +64,6 @@ public class Server {
 
     private synchronized void onClientDisconnected(ClientHandler clientHandler) {
         LOG.info("onClientDisconnected()");
-    }
-
-    private void handleInvalidRequest() {
-
     }
 
     private class ThreadWaitClient extends Thread {
@@ -108,7 +108,6 @@ public class Server {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                     LOG.error("ClientHandler: ClassNotFoundException incorrect object type from client");
-                    handleInvalidRequest();
                     continue;
                 } catch (IOException e) {
                     e.printStackTrace();
