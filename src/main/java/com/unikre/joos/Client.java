@@ -38,9 +38,10 @@ public class Client {
             os = new ObjectOutputStream(socket.getOutputStream());
             is = new ObjectInputStream(socket.getInputStream());
             isConnected = true;
+            LOG.info("Connected to " + serverAddress + ":" + serverPort);
             return true;
         } catch (IOException e) {
-            LOG.error("connect() FAIL " + e.toString());
+            LOG.error("IOException when connect to " + serverAddress + ":" + serverPort, e);
             disconnect();
             return false;
         }
@@ -86,7 +87,7 @@ public class Client {
             os.writeObject(request);
         } catch (IOException e) {
             disconnect();
-            LOG.error("request() FAIL can not write to server " + e.toString());
+            LOG.error("FAIL can not write to server " + e.toString());
             return null;
         }
 
@@ -95,7 +96,7 @@ public class Client {
             return (Message) is.readObject();
         } catch (Exception e) {
             disconnect();
-            LOG.error("request() FAIL can not read from server " + e.toString());
+            LOG.error("FAIL can not read from server " + e.toString());
             return null;
         }
     }

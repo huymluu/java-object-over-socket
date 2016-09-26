@@ -17,8 +17,8 @@ public class Server {
     private ServerSocket serverSocket;
     private ThreadWaitClient threadWaitClient;
     private boolean isRunning = false;
-    private int port;
-    private MessageProcessor messageProcessor;
+    private final int port;
+    private final MessageProcessor messageProcessor;
 
     public Server(int port, MessageProcessor messageProcessor) {
         this.port = port;
@@ -28,14 +28,15 @@ public class Server {
     public boolean start() {
         try {
             serverSocket = new ServerSocket(port);
-            threadWaitClient = new ThreadWaitClient();
-            isRunning = true;
-            threadWaitClient.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Error when new ServerSocket at port " + port, e);
             return false;
         }
 
+        threadWaitClient = new ThreadWaitClient();
+        isRunning = true;
+        threadWaitClient.start();
+        LOG.info("Success start Server at port " + port);
         return true;
     }
 
@@ -49,7 +50,7 @@ public class Server {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Error when close ServerSocket", e);
             return false;
         }
 
@@ -76,9 +77,8 @@ public class Server {
                     onNewClientConnected(socket);
                 } catch (SocketException ignored) {
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.warn("Error when accept()", e);
                 }
-
             }
         }
     }
@@ -106,11 +106,10 @@ public class Server {
                     LOG.info("ClientHandler: client close connection");
                     break;
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                    LOG.error("ClientHandler: ClassNotFoundException incorrect object type from client");
+                    LOG.warn("ClientHandler: ClassNotFoundException incorrect object type from client");
                     continue;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.error("ClientHandler: Error when readObject()", e);
                     break;
                 }
 
