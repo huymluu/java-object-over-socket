@@ -18,10 +18,15 @@ public class Client {
     private ObjectInputStream is;
     private ObjectOutputStream os;
     private boolean isConnected = false;
+    private int socketTimeout = 0;
 
     public Client(String address, int port) {
         this.serverAddress = address;
         this.serverPort = port;
+    }
+
+    public void setSoTimeout(int timeout) {
+        this.socketTimeout = timeout;
     }
 
     private boolean tryConnectIfNot() {
@@ -34,7 +39,7 @@ public class Client {
         // Connect
         try {
             socket = new Socket(serverAddress, serverPort);
-            socket.setSoTimeout(5000);
+            socket.setSoTimeout(socketTimeout);
             os = new ObjectOutputStream(socket.getOutputStream());
             is = new ObjectInputStream(socket.getInputStream());
             isConnected = true;
