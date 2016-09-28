@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -42,6 +43,10 @@ public class Message implements Serializable {
 
     public <T> T getPayloadObject(Class<T> classOfT) {
         return gson.fromJson(decompress(body), classOfT);
+    }
+
+    public <T> T getPayloadObject(Type typeOfT) {
+        return gson.fromJson(decompress(body), typeOfT);
     }
 
     private byte[] toGZIPBytes(String inputString) {
