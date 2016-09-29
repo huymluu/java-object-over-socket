@@ -46,6 +46,10 @@ public class Message implements Serializable {
         return gson.fromJson(decompress(body), classOfT);
     }
 
+    public int getPayloadSize() {
+        return (body == null ? 0 : body.length);
+    }
+
     public <T> T getPayloadObject(Type typeOfT) {
         return gson.fromJson(decompress(body), typeOfT);
     }
