@@ -11,7 +11,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public final class Message implements Serializable {
-    private static final long serialVersionUID = -4032660901766903668L;
     private int code;
     private byte[] body;
 
