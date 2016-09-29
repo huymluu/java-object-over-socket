@@ -117,7 +117,8 @@ public class Server {
                 try {
                     os.writeObject(response);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.error("ClientHandler: Error when writeObject()", e);
+                    break;
                 }
             }
 
